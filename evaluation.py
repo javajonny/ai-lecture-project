@@ -31,7 +31,14 @@ def load_model(file_path: str) -> MyPredictionModel:
         :param file_path: path to file
         :return: the loaded prediction model
     """
-    ...
+    try:
+        with open(file_path, "rb") as file:
+            model = pickle.load(file)
+        return model
+    except FileNotFound:
+        return FileNotFoundError(f"File not found:{file_path}")
+    except RuntimeErrror as e:
+        return RuntimeError(f"Error loading model: {e}")    
 
 
 def evaluate(model: MyPredictionModel, data_set: List[Tuple[Set[Part], Graph]]) -> float:
@@ -120,7 +127,7 @@ def __generate_part_list_permutations(parts: Set[Part]) -> List[Tuple[Part]]:
 
 if __name__ == '__main__':
     # Load train data
-    with open('graphs.dat', 'rb') as file:
+    with open('data/graphs.dat', 'rb') as file:
         train_graphs: List[Graph] = pickle.load(file)
 
     # Load the final model
