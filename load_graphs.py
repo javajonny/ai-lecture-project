@@ -12,5 +12,5 @@ def read_dat_file(filepath):
 
 
 if __name__ == '__main__':
-    content = read_dat_file('graphs.dat')
+    content = read_dat_file('data/graphs.dat')
     print(content)
