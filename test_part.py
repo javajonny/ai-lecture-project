@@ -28,3 +28,8 @@ class TestPart(unittest.TestCase):
 
         self.assertFalse(part1 == part1_equiv,
                          'Different instances with same attribute values should not be identical.')
+
+
+
+if __name__ == '__main__':
+    unittest.main()

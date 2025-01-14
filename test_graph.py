@@ -262,6 +262,9 @@ class TestGraph(unittest.TestCase):
                                         [1, 0, 0, 1, 0],
                                         [0, 1, 1, 0, 1],
                                         [0, 0, 0, 1, 0]], dtype=int)
-
         computed_adj_matrix = graph.get_adjacency_matrix(part_order)
         self.assertTrue(np.all(expected_adj_matrix == computed_adj_matrix), 'Adjacency matrices should be equal.')
+
+
+if __name__ == '__main__':
+    unittest.main()

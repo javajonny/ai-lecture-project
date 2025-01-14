@@ -129,3 +129,8 @@ class TestEvaluation(unittest.TestCase):
         computed_edge_accuracy = edge_accuracy(predicted_graph, target_graph)
 
         self.assertEqual(expected_edge_accuracy, computed_edge_accuracy, 'Wrong value for edge accuracy.')
+
+
+
+if __name__ == '__main__':
+    unittest.main()
