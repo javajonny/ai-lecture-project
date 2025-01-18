@@ -1,0 +1,40 @@
+## Projekt:
+
+•⁠  ⁠Kleiner Rahmen gegeben
+•⁠  ⁠Wir haben Baugruppen und Bauteile, Baugruppern werden aus Bauteilen zusammengebaut
+    - Wir müssen aus einzelnen Bauteilen die Baugruppen zusammenbauen
+    - Baugruppen aus bauteilen sind durch graphen repäsentiert (A - B - C- D- B- C- A) erzeugt e.g. ein Lenkrad und A, B, C, D sind einzelne Bauteile des Lenkrads zusammengesteckt
+•⁠  ⁠Es gibt mehrere mögliche Graphen, welche die Baugruppe “korrekt” zusammenbaut
+•⁠  ⁠kein training split etc. gegeben
+    - Wollen wir cross validation nutzen
+    - etc.
+•⁠  ⁠Evaluationsmetrik ein vorschlag, keine fix gegebene, möglichkeit für verbesserung
+
+Daten: 
+
+•⁠  ⁠Keine Zyklen
+•⁠  ⁠Bauteile als Baum strukturiert
+•⁠  ⁠Output: Am Ende muss irgendeine Graph-repräsentation rauskommen (e.g. Multimenge an graphen, keine e.g. Bild oder so)
+
+Methoden: 
+
+•⁠  ⁠Equals: Gleiche INstanz
+•⁠  ⁠Equivalent: gleiche Werte
+
+Ausblick: 
+
+•⁠  ⁠Relativ einfach gute Ergebnisse zu erziehlen (über 90% sollte locker drin sein)
+•⁠  ⁠Was wir sehen werden:
+    - Connectoren welche schon verwendet wurden beeinflussen mögliche weitere connectoren:
+    - E.g. A hat einen Schraubconnector und einen steckconnector
+    - B ist schraube, c ist stecker
+    - Dann: A, B, C, A → A und A nicht das gleiche (da im ersten A noch ein steckconnector frei, im 2. noch ein Schraubconnector frei)
+
+Note: 
+
+•⁠  ⁠Totale Accuracy am Ende nicht für die Note entscheidend
+•⁠  ⁠Wichtiger:
+    - Gute Umsetzung der Konzepte in der VL entscheidend
+    - Saubere Programmierung und umsetzung der konzepte wichtiger als die accuracy
+    - es muss nachvollziehbar sein: Wieso machen wir was wir machen → ReadME
+        - E.g. wir haben xyz gemacht, das gesehen, daher müssen wir jetzt abc noch machen etc.
