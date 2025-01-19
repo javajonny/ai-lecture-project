@@ -18,7 +18,8 @@
 
 
 ## Modellansätze
-- Random --> Accuracy: 70.79 % 
+- Random --> Accuracy: 70.71%
+
 
 - Feedforward NN, welches die Parts(frequency encoded) als Input erhält und ganze Adjacency Matrizen (Dimension: number_of_unique_parts x number_of_unique_parts) zurückgeben soll --> Benötigt zu viel RAM
 - GNN --> Graph Convolutional Network
