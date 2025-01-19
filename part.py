@@ -6,7 +6,9 @@ class Part:
     """
 
     def __init__(self, part_id: int, family_id: int):
-        assert part_id and family_id, 'Creation of Part failed. Fields `part_id` and `family_id` must not be empty.'
+        assert part_id is not None, 'Creation of Part failed. Field `part_id` must not be None.'
+        assert family_id is not None
+        # assert part_id and family_id, 'Creation of Part failed. Fields `part_id` and `family_id` must not be empty.'
         self.__part_id: int = part_id
         self.__family_id: int = family_id
 
