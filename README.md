@@ -22,7 +22,7 @@
 - Vorhersage des kompletten Graphen in einem Schritt
     - Feedforward NN, welches die Parts(frequency encoded) als Input erhält und ganze Adjacency Matrizen (Dimension: number_of_unique_parts x number_of_unique_parts) zurückgeben soll 
         --> Benötigt zu viel RAM
-- Vorhersage der jeweiligen nächsten Komponente
+- Vorhersage der jeweiligen nächsten Komponente (schrittweises Zusammenbauen des Graphen)
     - GNN (VL 1, Folie 12)
 - Berechnen der wahrscheinlichsten Nachbarn und daraus Modell zusammenbauen
     - Neighbour-Prediction mit SVM, Random Forrest oder Feedforward NN
