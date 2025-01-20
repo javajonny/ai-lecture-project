@@ -19,10 +19,13 @@
 
 ## Modellansätze
 - Random --> Accuracy: 70.71%
-
-
-- Feedforward NN, welches die Parts(frequency encoded) als Input erhält und ganze Adjacency Matrizen (Dimension: number_of_unique_parts x number_of_unique_parts) zurückgeben soll --> Benötigt zu viel RAM
-- GNN --> Graph Convolutional Network
+- Vorhersage des kompletten Graphen in einem Schritt
+    - Feedforward NN, welches die Parts(frequency encoded) als Input erhält und ganze Adjacency Matrizen (Dimension: number_of_unique_parts x number_of_unique_parts) zurückgeben soll 
+        --> Benötigt zu viel RAM
+- Vorhersage der jeweiligen nächsten Komponente
+    - GNN (VL 1, Folie 12)
+- Berechnen der wahrscheinlichsten Nachbarn und daraus Modell zusammenbauen
+    - Neighbour-Prediction mit SVM, Random Forrest oder Feedforward NN
 - Variational Autoencoder (VAE)
 
 
