@@ -7,6 +7,7 @@
 
 
 import os
+import sys
 
 import random
 from matplotlib import pyplot as plt
@@ -40,11 +41,11 @@ random.seed(SEED)
 
 # Hyperparameter:
 input_dim = 4542        # Fest
-hidden_dim = 1024       # 128 / 1024 / 2048 / 4542   -> Input = obere schranke
+hidden_dim = int(sys.argv[1])       # 128 / 1024 / 2048 / 4542   -> Input = obere schranke
 output_dim = 2271       # Fest
-learning_rate = 0.0005  # 0.01 / 0.001 / 0.0005
+learning_rate = float(sys.argv[3])  # 0.01 / 0.001 / 0.0005
 num_epochs = 50         # Fest
-batch_size = 128          # 16 / 32 / 64
+batch_size = int(sys.argv[2])   # 16 / 32 / 64
 
 
 # # 1. GraphDataSet
@@ -279,7 +280,7 @@ testing_set = GraphDataset("data/graphs.dat", test = True, seed=SEED)
 train_part_dataset = PartDataset(training_set)      # --> Länge 59275 alle parts in allen Graphen (Alle graph - PArtID combis)
 val_part_dataset = PartDataset(validation_set)
 
-training_set.graphs[0].draw()
+# training_set.graphs[0].draw()
 example_column = 0      # Max 59275
 
 print("Features: ---------------------")
@@ -369,7 +370,7 @@ class FFNN(nn.Module):
 
         # Prepare DataLoaders
         train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
-        val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False)
+        val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=True)
 
         # Document Losses and Accuracies
         train_losses = []
@@ -867,10 +868,10 @@ graph = graphbuilder.predict_graph(example_parts_set1)
 # In[15]:
 
 
-testing_list = []
-for parts, graph in testing_set:
+validation_list = []
+for parts, graph in validation_set:
     tuple = (parts, graph)
-    testing_list.append(tuple)
+    validation_list.append(tuple)
 
 
 # In[17]:
@@ -885,7 +886,7 @@ builder = GraphBuilder()
 builder.load_model(input_dim, hidden_dim, output_dim, model_path)
 
 # Evaluate the model
-accuracy = evaluate(builder, testing_list)
+accuracy = evaluate(builder, validation_list)
 print("Accuracy of NeighbourGraphPredictionModel: ", accuracy)
 
 # Create the folder if it doesn't exist
@@ -893,8 +894,6 @@ output_folder = "hyperparameter_tuning"
 os.makedirs(output_folder, exist_ok=True)
 
 # Save accuracy to CSV
-output_file = os.path.join(output_folder, f"{hidden_dim}-{batch_size}-{learning_rate}-training_results.csv")
-
 output_file = os.path.join(output_folder, f"{hidden_dim}-{batch_size}-{learning_rate}-edge_accuracy.csv")
 with open(output_file, "w", newline="") as csvfile:
     writer = csv.writer(csvfile)
