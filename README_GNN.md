@@ -1,25 +1,21 @@
 
-## 2. Graph Convolutional Network Model Selection: 
+# Graph Convolutional Network
+As a further approach, we employ a Graph Convolutional Network (GCN) to solve the graph prediction problem, 
+specifically focusing on predicting edges within a graph structure. While initial attempts utilized a Graph Autoencoder (GAE) 
+architecture due to its suitability for edge prediction tasks (https://github.com/tkipf/gae), the results were not promising. 
+Consequently, a GCN was implemented as a simpler, more interpretable solution.
 
-### 2.1 Graph Auto Encoder: 
+This approach was the last, experimental approach that we took. Since during training, the results were overall not too positive
+and time limitations prevented us from further pursuing this implementation, this can and should be seen as a general approach to 
+solving the graph implementation problem rather than a functional, validated and performant solution to the problem. 
 
-### 2.2 Graph Convolutional Network: 
-- Graph Convolutional Network (GCN): Propagates information through the graph using node connections.
-GraphSAGE: Extends GCN to inductively learn embeddings for unseen nodes.
-Graph Attention Network (GAT): Uses attention mechanisms to weigh neighboring nodes differently.
-Node2Vec: Generates embeddings using random walks, often used with a similarity-based approach for edge prediction.
+# Approach and Methodology
 
-Built a two-layer GCN model for edge prediction.
-Implemented a forward pass to compute adjacency probabilities.
+## Data Preparation
 
-
-Predicted edges using adjacency probabilities.
-Developed create_mst to construct a graph using a minimum spanning tree.
-
-## 3. Approach and Methodology
-
-### 3.1 Data Preparation:
+### Node Embeddings
 When designing the node embeddings for our graph, we chose random walk embeddings with Word2Vec over context embeddings.
+This approach captures local and global structural information of nodes in the graph.
 Per Graph, a list of Random Walks were generated to train the configured Word2Vec model for Random Walks. 
 The resulting parts_embeddings.model was then used to retrieve the embeddings for all Part_IDs. 
 
@@ -27,35 +23,55 @@ Some Parameter decisions included:
 
 | Parameter                  | Value | Reasoning                                                                                                                                                              |
 |----------------------------|-------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Number of walks per graph  | 16    | Since each starting node of the Random walk is equally likely, this addresses that for the majority of graphs (which have fewer than 8 nodes) each node is starting not of the Random Walk likely twice.|
-| Walk Length               | 8     | The walk length matches the typical graph size, ensuring complete exploration. For small graphs, it avoids overtraversal of the topology and potentially duplicated segments |
-| Embedding Vector Size            | 16    | A vector size of 16 captures sufficient structural information without overfitting. Between the options of embeddings, consisting of 8 or 32 values, this balanced performance and computational requirements the best.|
+| Number of walks per graph  | 16    | Ensures that for most graphs (fewer than 8 nodes), each node serves as the starting point approximately twice.|
+| Walk Length               | 8     |Matches typical graph sizes, avoiding redundant traversal in smaller graphs.|
+| Embedding Vector Size            | 16    | Captures structural information effectively, balancing between underfitting (size 8) and overfitting (size 32).|
  
+### Embedding Model Training
+Word2Vec was trained on the random walks with the following hyperparameters:
+- Context window: 5 (captures relationships between nodes within typical graph neighborhoods).
+- Epochs: 20 (ensures sufficient training without overfitting).
+- Skip-Gram model: Used for its effectiveness in learning node relationships in sparse data.
 
-### 3.2 Edge Labels: 
-During the creation of the Training Data, edge labels were created for each edge in a graph. Initially those edge labels were all positive, 
-since Training only happened on the positive edges. 
-As a result, the model learned to set all edge probabilities to 1. 
+Output: The trained Word2Vec model (parts_embeddings.model) provides embeddings for each Part ID.
 
-Therefore a negative loss term for edges, which were predicted to be highly probably, but not present in the original graph had to be included. 
-However, due to these intermediary steps, the training and backpropagation loop became more and more complicated, which is why negative edge labels (encoded by 0) were later included were then included already during the Training Data Preparation steps earlier on.
+### Edge Labels 
 
-During initial training after this adjustment, the model now tends to predict all edge probabilities at 0.5, 
+- Initial Setup:
+Positive edge labels were generated from existing graph edges. However, during initial training, the model learned to predict all edge probabilities as 1, leading to poor performance.
 
-### GCN Model Design:
-### Layers: 
-Two-layer GCN for feature transformation.
+- Adjustment:
+Negative edge labels were introduced during the data preparation stage by:
+- Generating all possible edges.
+- Identifying edges absent from the original graph as negative samples (labeled 0).
+This adjustment simplified the loss calculation during training and improved model performance.
 
-### Loss Function: 
-Binary Cross-Entropy Loss for edge prediction.
+## GCN Model Design
 
-### Prediction Workflow:
-### Pass node embeddings through the trained GCN.
-### Compute the probabilistic adjacency matrix.
-### Apply a threshold to identify edges.
+### Architecture
+A two-layer GCN was designed to predict edges by transforming node features into higher-dimensional 
+representations and computing adjacency probabilities.
 
+1. input Layer
+    - Takes node embeddings (size 16).
+2. Hidden Layer
+    - GCNConv with 32 hidden units.
+    - Activation: ReLU.
+3. Output Layer
+    - GCNConv with 16 units.
+    - Outputs latent node embeddings.
 
+### Training
+- Data Loader: Batched graphs for training using PyTorch Geometric's DataLoader.
+- Loss Function with Binary Cross-Entropy Loss:
+  - Positive edges: Encourages high probabilities for existing edges. 
+  - Negative edges: Penalizes predictions for non-existent edges.
 
-## 6. Results and Insights
+# Insights
 
-### Key Observations: Highlight trends, such as performance across different thresholds.
+Training Trends:
+- Initial training, using only positive edges, caused the model to predict all edge probabilities as 1. This indicated a lack of discrimination in edge classification, likely due to imbalanced training data.
+- Incorporating negative edges into the training process stabilized predictions, with most probabilities clustering near 0.5 initially. This behavior was consistent across epochs and highlighted potential issues in the model's ability to refine predictions beyond this midpoint. 
+- It remains unclear whether this outcome stems from an implementation issue or reflects an inherent limitation in the model's capacity to distinguish edges effectively under the current setup.
+
+Due to time constraints and as discussed earlier, we weren´t able to further pursue this approach and refine the implementation and training. 
