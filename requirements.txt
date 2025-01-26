@@ -99,6 +99,7 @@ numpy=1.24.4=py38ha84db1f_0
 openjpeg=2.5.3=h8a3d83b_0
 openssl=3.4.0=h81ee809_1
 packaging=24.2=pyhd8ed1ab_2
+pandas=2.0.3=pypi_0
 pandocfilters=1.5.1=pypi_0
 parso=0.8.4=pyhd8ed1ab_0
 pexpect=4.9.0=pyhd8ed1ab_0
@@ -123,6 +124,7 @@ python=3.8.18=h2469fbe_1_cpython
 python-dateutil=2.9.0=pyhd8ed1ab_0
 python_abi=3.8=5_cp38
 pytorch=2.5.0.dev20240731=py3.8_0
+pytz=2024.2=pypi_0
 pyyaml=6.0.2=py38h80987f9_0
 pyzmq=26.2.0=py38h7e0d939_0
 readline=8.2=h1a28f6b_0
@@ -145,6 +147,7 @@ tornado=6.4.1=py38h3237794_0
 tqdm=4.67.1=pypi_0
 traitlets=5.14.3=pyhd8ed1ab_0
 typing_extensions=4.12.2=pyha770c72_0
+tzdata=2025.1=pypi_0
 unicodedata2=15.1.0=py38hb192615_0
 urllib3=2.2.3=pyhd8ed1ab_0
 wcwidth=0.2.13=pyhd8ed1ab_0
