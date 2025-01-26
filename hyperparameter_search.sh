@@ -2,7 +2,7 @@
 
 # Define the values for each hyperparameter
 hidden_dims=(128 1024 4542) 
-batch_sizes=(16 64 256) 
+batch_sizes=(512 1024 2048) 
 learning_rates=(0.01 0.001 0.0005) 
 
 # Path to the Python script
