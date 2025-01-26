@@ -1,24 +1,8 @@
 # ai-lecture-project
 
-## Erste Gedanken
-- "Undirected, unweighted, non-cyclic and connected without self-loops"
---> also keine 
-- kleinste part number ist 0 --> aufpassen bei one-hot encoding und frequency encoding
-
-
-## Dataset
-- Embedding/Encoding von Parts 
-    - one-hot encoding
-        --> geht nicht
-            1. man verliert die Anzahl der Parts, weil ein Part A auch mehrmals auftreten kann in einem graph
-            2. wenn man für jeden Part einen one-hot encoded Vektor erstellt und diese stacked, dann ist die Dimension für jeden Tensor unterschiedlich, da abhängig von der Anzahl der Parts
-    - frequency encoding
-    - learning embedding wäre möglich, aber müsste mittrainiert werden
-
-
 
 ## Modellansätze
-- Random --> Accuracy: 70.71%
+- Random --> Accuracy: 70.43%
 - Vorhersage des kompletten Graphen in einem Schritt
     - Feedforward NN, welches die Parts(frequency encoded) als Input erhält und ganze Adjacency Matrizen (Dimension: number_of_unique_parts x number_of_unique_parts) zurückgeben soll 
         --> Benötigt zu viel RAM
@@ -29,19 +13,61 @@
 - Variational Autoencoder (VAE)
 
 
-## Metriken
-- edge accuracy vorgegeben
-- weitere Möglichkeiten: node accuracy
+## Finaler Ansatz
+
+### Idee
+- Nachbarn pro Knoten/Part vorhersagen --> bekommen Wahrscheinlichkeiten für jede Edge
+- daraus einen fully-connected graph bauen mit den Wahrscheinlichkeiten als weights (1-probability)
+- Minimum Spanning Tree erstellen
+- Minimum Spanning Tree in einen Graphen umwandeln, der den Anforderungen aus graph.py, part.py, node.py entspricht
+
+### Vorgehen
+ - explorative Datenanalyse
+ - Custom Dataset for graphs & parts
+        - Embedding/Encoding von Parts 
+            - nur one-hot encoding
+                --> geht nicht
+                    1. man verliert die Anzahl der Parts, weil ein Part A auch mehrmals auftreten kann in einem graph
+                    2. wenn man für jeden Part einen one-hot encoded Vektor erstellt und diese stacked, dann ist die Dimension für jeden Tensor unterschiedlich, da abhängig von der Anzahl der Parts
+            - frequency encoding reicht nicht aus
+            - learning embedding wäre möglich, aber müsste mittrainiert werden
+            --> Kombination aus frequency encoding und one-hot encoding
+![alt text](image-1.png)
+
+
+ ### Training, Hyperparameter Tuning & Testing 
+ - Training: warum BCE für loss function und Adam als optimizer?
+ - Hyperparameter Tuning (Grid Search) -> Ziel: Edge Accuracy des GraphBuilder maximieren
+    - Warum diese Werte, warum 
+ - beste Hyperparameter verwenden (siehe csv Dateien), um FFNN zu trainieren und dann auf dem testing_set testen 
+ - Abschließend das testing_set verwenden, um den GraphBuilder zu testen --> Edge Accuracy von 96.92%
+
+
+
+
+
+------------
+------------
+------------
+------------
+------------
+------------
+------------
+
+
+
+
+## Erste Gedanken
+- "Undirected, unweighted, non-cyclic and connected without self-loops"
+--> also keine 
+- kleinste part number ist 0 --> aufpassen bei one-hot encoding und frequency encoding
+
 
 
 ## Unterscheidung von Node, Part und Familie
 - Node: ist für den Graphen & enthält eine Referenz zu Part
 - Part: beschreibt eine einzelne Komponente -> part_id
 - Familie: beschreibt zu welche Familie ein Part gehört --> family_id
-
-
-
-
 
 
 
