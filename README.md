@@ -74,7 +74,7 @@ During Data preparation, for each part, the combined encoding of size 4542 (2271
 #### Model Architecture
 - Input Layer: Accepts the combined encoding of size 4542.
 - Hidden Layers: Two layers with ReLU activation, configured to process and abstract the high-dimensional input.
-- Output Layer: Produces a vector of probabilities for all possible connections.
+- Output Layer: Produces a vector of probabilities for all possible connections. For this the Sigmoid function is used to squish any real number into a range between 0 and 1.
 
 #### Training
 - Loss Function: Binary Cross-Entropy Loss to handle the binary adjacency labels.
