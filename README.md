@@ -81,7 +81,7 @@ During Data preparation, for each part, the combined encoding of size 4542 (2271
 - Optimizer: Adam optimizer for efficient training.
 
 #### Adjacency Matrix and Minimum Spanning Tree Construction
-After training, the model predicts the edge probabilities for each part in a set of partIds, which create the graph. 
+After training, the model predicts the edge probabilities for each part in a set of partIds, which create the graph. An illustration of this mapping can be found here: ![alt text](image-2.png) 
 
 The adjacency matrix is constructed iteratively by:
 
